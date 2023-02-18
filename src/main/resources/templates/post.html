@@ -15,6 +15,10 @@
   <h5 th:text="'Created on ' + ${post.createdAt}">Created Date</h5>
   <p th:text="${post.body}">body text</p>
   <hr />
+    <ul sec:authorize="isAuthenticated()">
+      <li><a th:href="@{'/posts/' + ${post.id} + '/edit'}">Edit</a></li>
+      <li><a th:href="@{'/posts/' + ${post.id} + '/delete'}">Delete</a></li>
+    </ul>
 </div>
 </div>
 

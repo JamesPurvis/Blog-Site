@@ -23,7 +23,17 @@
         </div>
     </div>
     <hr />
-    <ul>
+        <div sec:authorize="isAuthenticated()">
+            <form action="#"
+                  th:action="@{/logout}"
+                  method="POST">
+                <label>Hi, <span sec:authentication="name">Username</span></label>
+                <button type="submit">Logout</button>
+        </div>
+
+        </form>
+
+        <ul sec:authorize="!isAuthenticated()">
         <li> <a th:href="@{/register}">Register</a></li>
         <li> <a th:href="@{/login}">Login</a></li>
     </ul>
