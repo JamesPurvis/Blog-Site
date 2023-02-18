@@ -17,6 +17,7 @@ public class PostService {
     private PostRepository postRepository;
 
     public Optional<Post> getById(Long id) {
+
         return postRepository.findById(id);
     }
 
@@ -25,6 +26,7 @@ public class PostService {
     }
 
     public Post save(Post post) {
+
         if (post.getId() == null) {
             post.setCreatedAt(LocalDateTime.now());
         }
