@@ -10,7 +10,7 @@
 <div class="container">
     <h1>SpringBoot Blog Application</h1>
     <hr />
-    <ul>
+    <ul sec:authorize="isAuthenticated()">
         <li><a th:href="@{/posts/new}">New Post</a></li>
     </ul>
     <div class="posts-container">
@@ -18,6 +18,7 @@
             <h2><a th:href="@{'/posts/' + ${post.id}}" th:text="${post.title}">Title</a></h2>
             <h5 th:text="'Written by ' + ${post.account.firstName}">Written by</h5>
             <h5 th:text="'Published at ' + ${post.createdAt}">Created At</h5>
+            <h5 th:text="'Last Updated at ' + ${post.updatedAt}">Updated At</h5>
             <p th:text="${post.body}">body text</p>
             <br />
         </div>

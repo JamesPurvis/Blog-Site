@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.security.Principal;
 import java.util.Optional;
 
 @Controller
@@ -38,8 +39,15 @@ public class PostController {
     }
 
     @GetMapping("/posts/new")
-    public String createNewPost(Model model) {
-        Optional<Account> optionalAccount = accountService.findByEmail("user.user@domain.com");
+    public String createNewPost(Model model, Principal principal) {
+
+        String userName = "AnonymousUser";
+
+        if (principal != null) {
+            userName = principal.getName();
+        }
+
+        Optional<Account> optionalAccount = accountService.findByEmail(userName);
 
         if (optionalAccount.isPresent()) {
             Post post = new Post();
@@ -88,4 +96,21 @@ public class PostController {
 
         return "redirect:/posts/" + post.getId();
     }
+
+    @GetMapping("/posts/{id}/delete")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public String deletePost(@PathVariable Long id) {
+        Optional<Post> optionalPost = postService.getById(id);
+
+        if (optionalPost.isPresent()) {
+            Post post = optionalPost.get();
+
+            postService.delete(post);
+            return "redirect:/";
+        } else {
+            return "404";
+        }
+    }
+
+
 }

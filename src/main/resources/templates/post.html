@@ -13,6 +13,7 @@
   <h2 th:text="${post.title}">Title</h2>
     <h5 th:text="'Written by ' + ${post.account.firstName}">Written by</h5>
   <h5 th:text="'Created on ' + ${post.createdAt}">Created Date</h5>
+    <h5 th:text="'Last Updated at ' + ${post.updatedAt}">Updated At</h5>
   <p th:text="${post.body}">body text</p>
   <hr />
     <ul sec:authorize="isAuthenticated()">

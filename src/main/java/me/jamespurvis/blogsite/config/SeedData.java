@@ -50,7 +50,6 @@ public class SeedData implements CommandLineRunner {
             account1.setEmail("user.user@domain.com");
             Set<Authority> authorities1 = new HashSet<>();
             authorityRepository.findById("ROLE_USER").ifPresent(authorities1::add);
-            authorityRepository.findById("ROLE_ADMIN").ifPresent(authorities1::add);
             account1.setAuthorities(authorities1);
 
             account2.setFirstName("admin");
