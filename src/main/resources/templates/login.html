@@ -6,10 +6,23 @@
   <meta name="viewport" contents="width=device-width, intial-scale=1">
   <title>Blog :: Login</title>
 </head>
-<body>
+<body onload="showDiv()">
+<div id="login-failure">
+    <span>Login failed: Incorrect username or password.</span>
+</div>
 <div class="container">
   <h1>Spring Boot Application</h1>
   <hr />
+
+    <script type="text/javascript">
+        function showDiv() {
+            if (window.location.href.indexOf("error") != -1) {
+                document.getElementById("login-failure").style.display = "block";
+            } else {
+                document.getElementById("login-failure").style.display = "none";
+            }
+        }
+    </script>
   <form action="#" th:action="@{/login}" method = "POST">
     <div class="form-group">
     <label for="email">Email</label>

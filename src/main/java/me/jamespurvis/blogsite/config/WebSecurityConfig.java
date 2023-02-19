@@ -44,12 +44,12 @@ public class WebSecurityConfig {
                 .usernameParameter("email")
                 .passwordParameter("password")
                 .defaultSuccessUrl("/", true)
-                .failureForwardUrl("/login?error")
+                .failureUrl("/login?error")
                 .permitAll()
                 .and()
                 .logout()
                 .logoutUrl("/logout")
-                .logoutSuccessUrl("/login?lougout")
+                .logoutSuccessUrl("/login?logout")
                 .and()
                 .httpBasic();
 
