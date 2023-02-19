@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://thymeleaf.org"
- xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -17,10 +17,12 @@
     <h5 th:text="'Last Updated at ' + ${post.updatedAt}">Updated At</h5>
   <p th:text="${post.body}">body text</p>
   <hr />
-      <ul sec:authorize="${hasAuthority('ROLE_ADMIN')}">
+      <th:block th:if="${#authentication.getPrincipal().getUsername()} == ${post.account.email} OR ${#authorization.expression('hasAuthority(''ROLE_ADMIN'')')}">
+      <ul>
       <li><a th:href="@{'/posts/' + ${post.id} + '/edit'}">Edit</a></li>
       <li><a th:href="@{'/posts/' + ${post.id} + '/delete'}">Delete</a></li>
       </ul>
+      </th:block>
 </div>
 </div>
 

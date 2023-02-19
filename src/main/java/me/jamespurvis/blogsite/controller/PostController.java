@@ -6,6 +6,8 @@ import me.jamespurvis.blogsite.service.AccountService;
 import me.jamespurvis.blogsite.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import java.security.Principal;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Controller
 public class PostController {
@@ -67,9 +70,15 @@ public class PostController {
 
     @GetMapping("/posts/{id}/edit")
     @PreAuthorize("isAuthenticated()")
-    public String getPostForEdit(@PathVariable Long id, Model model) {
-        System.out.println("TEST");
+    public String getPostForEdit(@PathVariable Long id, Model model, Principal principal) {
         Optional<Post> optionalPost = postService.getById(id);
+        String emailAddress = principal.getName();
+        boolean isAdmin = SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
+                .anyMatch(r -> r.getAuthority().equals("ROLE_ADMIN"));
+
+        if (!isAdmin || optionalPost.get().getAccount().getEmail().equals(emailAddress)) {
+            return "404";
+        }
 
         if (optionalPost.isPresent()) {
             Post post = optionalPost.get();
@@ -99,8 +108,15 @@ public class PostController {
 
     @GetMapping("/posts/{id}/delete")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public String deletePost(@PathVariable Long id) {
+    public String deletePost(@PathVariable Long id, Principal principal) {
         Optional<Post> optionalPost = postService.getById(id);
+        String emailAddress = principal.getName();
+        boolean isAdmin = SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
+                .anyMatch(r -> r.getAuthority().equals("ROLE_ADMIN"));
+
+        if (!isAdmin || optionalPost.get().getAccount().getEmail().equals(emailAddress)) {
+            return "404";
+        }
 
         if (optionalPost.isPresent()) {
             Post post = optionalPost.get();
