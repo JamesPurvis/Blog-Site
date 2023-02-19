@@ -76,7 +76,7 @@ public class PostController {
         boolean isAdmin = SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
                 .anyMatch(r -> r.getAuthority().equals("ROLE_ADMIN"));
 
-        if (!isAdmin || !optionalPost.get().getAccount().getEmail().equals(emailAddress)) {
+        if (!isAdmin && !optionalPost.get().getAccount().getEmail().toLowerCase().equals(emailAddress.toLowerCase())) {
             return "404";
         }
 
@@ -107,14 +107,14 @@ public class PostController {
     }
 
     @GetMapping("/posts/{id}/delete")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("isAuthenticated()")
     public String deletePost(@PathVariable Long id, Principal principal) {
         Optional<Post> optionalPost = postService.getById(id);
         String emailAddress = principal.getName();
         boolean isAdmin = SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
                 .anyMatch(r -> r.getAuthority().equals("ROLE_ADMIN"));
 
-        if (!isAdmin || !optionalPost.get().getAccount().getEmail().equals(emailAddress)) {
+        if (!isAdmin && !optionalPost.get().getAccount().getEmail().toLowerCase().equals(emailAddress.toLowerCase())) {
             return "404";
         }
 
