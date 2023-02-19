@@ -76,7 +76,7 @@ public class PostController {
         boolean isAdmin = SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
                 .anyMatch(r -> r.getAuthority().equals("ROLE_ADMIN"));
 
-        if (!isAdmin || optionalPost.get().getAccount().getEmail().equals(emailAddress)) {
+        if (!isAdmin || !optionalPost.get().getAccount().getEmail().equals(emailAddress)) {
             return "404";
         }
 
@@ -114,7 +114,7 @@ public class PostController {
         boolean isAdmin = SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
                 .anyMatch(r -> r.getAuthority().equals("ROLE_ADMIN"));
 
-        if (!isAdmin || optionalPost.get().getAccount().getEmail().equals(emailAddress)) {
+        if (!isAdmin || !optionalPost.get().getAccount().getEmail().equals(emailAddress)) {
             return "404";
         }
 
